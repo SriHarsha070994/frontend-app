@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ApiService } from './api.service';
 
 @Component({
   selector: 'app-root',
@@ -8,6 +9,17 @@ import { Component } from '@angular/core';
 export class AppComponent {
   title = 'Client App';
   currentTime = Date.now();
-
-  constructor() {}
+  name = '';
+  constructor(private api: ApiService) {}
+  ngOnInit() {
+    this.api.getName().subscribe(
+      (result) => {
+        this.name = result;
+      },
+      (error) => {
+        console.error('Error: ' + JSON.stringify(error));
+        this.name = 'Failed to retrieve data from the backend server';
+      }
+    );
+  }
 }
